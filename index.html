@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentient GRID Contribution Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        .contribution-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .contribution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .contribution-card {
+            background: rgba(0, 255, 136, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .contribution-card:hover {
+            transform: scale(1.05);
+        }
+        .contribution-card h3 {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .input-section label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ff88;
+        }
+        .input-section select, .input-section input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #00cc6a;
+        }
+        #chart-container {
+            margin-top: 20px;
+        }
+        .chat-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .chat-section h2 {
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+        .chat-window {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .chat-message {
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .chat-message.user {
+            background: rgba(0, 255, 136, 0.3);
+            text-align: right;
+        }
+        .chat-message.bot {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .cta {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .cta a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cta a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentient GRID Contribution Tracker</h1>
+        <p class="subtitle">Contribute to @SentientAGI’s open-source AGI network and explore Sentient Chat’s AI capabilities!</p>
+        
+        <div class="grid">
+            <div class="contribution-section">
+                <div class="contribution-grid">
+                    <div class="contribution-card">
+                        <h3>Code Contributions</h3>
+                        <p>Write code for The GRID or OML models, building open-source AGI tools.</p>
+                    </div>
+                    <div class="contribution-card">
+                        <h3>Data Sharing</h3>
+                        <p>Share datasets to train community-owned AI like Dobby.</p>
+                    </div>
+                    <div class="contribution-card">
+                        <h3>Compute Power</h3>
+                        <p>Offer compute resources to power decentralized AGI training.</p>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <h2>Log Your Contribution</h2>
+                    <label for="contribution-type">Contribution Type</label>
+                    <select id="contribution-type">
+                        <option value="code">Code Contributions (Hours)</option>
+                        <option value="data">Data Sharing (Datasets)</option>
+                        <option value="compute">Compute Power (Hours)</option>
+                    </select>
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" min="0" placeholder="Enter amount (e.g., 5 hours)">
+                    <button onclick="logContribution()">Add Contribution</button>
+                </div>
+
+                <div id="chart-container">
+                    <canvas id="contributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chat-section">
+                <h2>Try Sentient Chat</h2>
+                <div class="chat-window" id="chatWindow">
+                    <div class="chat-message bot">Welcome to Sentient Chat! I’m powered by 15+ agents to answer your questions. Try asking about The GRID!</div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Ask about Sentient or AGI...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+                <p class="cta"><a href="https://chat.sentient.xyz" target="_blank">Try the real Sentient Chat!</a></p>
+            </div>
+        </div>
+
+        <div class="cta">
+            <p>Join The GRID! <a href="https://sentient.xyz" target="_blank">Visit Sentient</a> or follow <a href="https://x.com/SentientAGI" target="_blank">@SentientAGI on X</a>.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const contributions = {
+            code: 0,
+            data: 0,
+            compute: 0
+        };
+
+        const ctx = document.getElementById('contributionChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Code (Hours)', 'Data (Datasets)', 'Compute (Hours)'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: ['rgba(0, 255, 136, 0.5)', 'rgba(255, 255, 255, 0.3)', 'rgba(0, 136, 255, 0.5)'],
+                    borderColor: '#00ff88',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#fff' } }
+                }
+            }
+        });
+
+        function logContribution() {
+            const type = document.getElementById('contribution-type').value;
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            if (amount <= 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+            contributions[type] += amount;
+            updateChart();
+            document.getElementById('amount').value = '';
+        }
+
+        function updateChart() {
+            chart.data.datasets[0].data = [
+                contributions.code,
+                contributions.data,
+                contributions.compute
+            ];
+            chart.update();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.innerHTML += `<div class="chat-message user">${message}</div>`;
+            chatWindow.innerHTML += `<div class="chat-message bot">Try Sentient Chat at chat.sentient.xyz for real-time AI answers about The GRID and more!</div>`;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
